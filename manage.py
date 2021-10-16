@@ -6,7 +6,15 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_heroku_arq.settings')
+    PROD_SETTINGS = os.environ.get('PROD_SETTINGS')
+    print('PROD_SETTINGS: {0}'.format(PROD_SETTINGS))
+
+    if PROD_SETTINGS and PROD_SETTINGS == 'True':
+        print('CARGANDO MODO PRODUCTIVO')
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_heroku_arq.settings-prod')
+    else:
+        print('CARGANDO MODO DESARROLLADOR')
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_heroku_arq.settings')        
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
